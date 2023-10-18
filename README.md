@@ -52,6 +52,7 @@ const initialState: BlogState = {
 
 /* use createReducer and createAction */
 // export const addPost = createAction<Post>("/blog/addPost")
+
 // // export const addPost = createAction("/blog/addPost", function (post: Omit<Post, "id">) {
 // //   return {
 // //     payload: {
@@ -61,8 +62,11 @@ const initialState: BlogState = {
 // //   }
 // // })
 // export const startEditingPost = createAction<string>("/blog/startEditingPost")
+
 // export const deletePost = createAction<string>("/blog/deletePost")
+
 // export const cancelEditingPost = createAction("/blog/cancelEditingPost")
+
 // export const finishEditingPost = createAction<Post>("/blog/finishEditingPost")
 
 // const blogReducer = createReducer(initialState, (builder) => {
@@ -72,11 +76,13 @@ const initialState: BlogState = {
 //       const post = action.payload
 //       state.postList.push(post)
 //     })
+
 //     .addCase(startEditingPost, (state, action) => {
 //       const postId = action.payload
 //       const foundPost = state.postList.find((post) => post.id === postId) || null
 //       state.editingPost = foundPost
 //     })
+
 //     .addCase(deletePost, (state, action) => {
 //       const postId = action.payload
 //       const findPostIndex = state.postList.findIndex((post) => post.id === postId)
@@ -84,9 +90,11 @@ const initialState: BlogState = {
 //         state.postList.splice(findPostIndex, 1)
 //       }
 //     })
+
 //     .addCase(cancelEditingPost, (state) => {
 //       state.editingPost = null
 //     })
+
 //     .addCase(finishEditingPost, (state, action) => {
 //       const postId = action.payload.id
 //       state.postList.some((post, index) => {
@@ -98,12 +106,14 @@ const initialState: BlogState = {
 //       })
 //       state.editingPost = null
 //     })
+
 //     .addMatcher(
 //       (action) => action.type.includes("cancel"),
 //       (state) => {
 //         current(state)
 //       }
 //     )
+
 //   // .addDefaultCase((state, action)=>{})
 // })
 
@@ -144,6 +154,7 @@ export const deletePost = createAsyncThunk('blog/deletePost', async (postId: str
 //   const response = await userAPI.fetchById(userId)
 //   return response.data
 // })
+
 export const blogSlice = createSlice({
   name: 'blog',
   initialState,
@@ -165,6 +176,7 @@ export const blogSlice = createSlice({
     //     }
     //   })
     // },
+    
     // deletePost: (state, action: PayloadAction<string>) => {
     //   const postId = action.payload
     //   const findPostIndex = state.postList.findIndex((post) => post.id === postId)
@@ -172,6 +184,7 @@ export const blogSlice = createSlice({
     //     state.postList.splice(findPostIndex, 1)
     //   }
     // },
+    
     cancelEditingPost: (state) => {
       state.editingPost = null
     }
@@ -186,6 +199,7 @@ export const blogSlice = createSlice({
     //   })
     //   state.editingPost = null
     // }
+    
   },
   extraReducers: (builder) => {
     builder
@@ -193,12 +207,15 @@ export const blogSlice = createSlice({
       // .addCase(fetchUserDatawithId.fulfilled, (state, action) => {
       //   state.postList.push(action.payload)
       // })
+      
       .addCase(fetchPostList.fulfilled, (state, action) => {
         state.postList = action.payload
       })
+      
       .addCase(addPost.fulfilled, (state, action) => {
         state.postList.push(action.payload)
       })
+      
       .addCase(updatePost.fulfilled, (state, action) => {
         const postId = action.payload.id
         state.postList.some((post, index) => {
@@ -210,6 +227,7 @@ export const blogSlice = createSlice({
         })
         state.editingPost = null
       })
+      
       .addCase(deletePost.fulfilled, (state, action) => {
         const postId = action.meta.arg //get postId
         const findPostIndex = state.postList.findIndex((post) => post.id === postId)
@@ -217,10 +235,12 @@ export const blogSlice = createSlice({
           state.postList.splice(findPostIndex, 1)
         }
       })
+      
       .addMatcher(
         (action) => action.type.includes('cancel'),
         (state) => current(state)
       )
+      
       .addDefaultCase((state, action) => {
         console.log(`Action type: ${action.type} and current state: ${current(state)}`)
       })
